@@ -7,13 +7,6 @@ import (
 	"strings"
 )
 
-func Abs(x, y int) int {
-	value := x - y
-	if value < 0 {
-		return -value
-	}
-	return value
-}
 func IsAscending(values []int) bool {
 	for i, v := range values[1:] {
 		if values[i] >= v {
