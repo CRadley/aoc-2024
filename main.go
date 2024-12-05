@@ -11,13 +11,14 @@ import (
 	"runtime/debug"
 )
 
-func executeDay(day, filepath string) (int, int, error) {
+func executeDay(day string) (int, int, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Printf("Something went wrong... \n\n%s\n\n%s", r, debug.Stack())
 			os.Exit(-1)
 		}
 	}()
+	filepath := fmt.Sprintf("input/%s", day)
 	switch day {
 	case "1":
 		return day01.Execute(filepath)
@@ -36,9 +37,9 @@ func executeDay(day, filepath string) (int, int, error) {
 
 func main() {
 	args := os.Args[1:]
-	if len(args) != 2 {
+	if len(args) != 1 {
 		os.Exit(1)
 	}
-	p1, p2, err := executeDay(args[0], args[1])
+	p1, p2, err := executeDay(args[0])
 	fmt.Printf("---Part 1---\n%d\n---Part 2---\n%d\n---ERROR---\n%s\n", p1, p2, err)
 }
