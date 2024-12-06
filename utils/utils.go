@@ -7,3 +7,7 @@ func Abs(x, y int) int {
 	}
 	return value
 }
+
+func IsWithinBounds(i, j int, lines [][]string) bool {
+	return (i >= 0 && i < len(lines)) && (j >= 0 && j < len(lines[0]))
+}
