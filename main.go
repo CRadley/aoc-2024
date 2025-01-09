@@ -49,6 +49,8 @@ func executeDay(day string) (int, int, error) {
 		return day10.Execute(filepath)
 	case "11":
 		return day11.Execute(filepath)
+	case "12":
+		return day12.Execute(filepath)
 	}
 
 	return -1, -1, fmt.Errorf("day '%s' not found", day)
