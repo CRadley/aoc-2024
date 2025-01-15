@@ -2,7 +2,6 @@ package day12
 
 import (
 	"aoc2024/utils"
-	"fmt"
 	"os"
 	"slices"
 	"strings"
@@ -105,11 +104,9 @@ func CalculateCornerNum(group []Point) int {
 		if len(v)%2 == 1 {
 			t += 1
 		} else if len(v) == 2 && NotNeighbours(v[0], v[1]) {
-			fmt.Println(v)
 			t += 2
 		}
 	}
-	fmt.Println(t, len(group))
 	return t * len(group)
 }
 
