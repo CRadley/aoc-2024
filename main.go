@@ -15,6 +15,7 @@ import (
 	"aoc2024/day12"
 	"aoc2024/day13"
 	"aoc2024/day14"
+	"aoc2024/day15"
 	"fmt"
 	"os"
 	"runtime/debug"
@@ -58,6 +59,8 @@ func executeDay(day string) (int, int, error) {
 		return day13.Execute(filepath)
 	case "14":
 		return day14.Execute(filepath)
+	case "15":
+		return day15.Execute(filepath)
 	}
 	return -1, -1, fmt.Errorf("day '%s' not found", day)
 }
