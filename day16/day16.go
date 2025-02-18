@@ -74,7 +74,7 @@ func Execute(filepath string) (int, int, error) {
 	am := map[Point]float64{}
 	v := map[Point]bool{}
 	for i, l := range s {
-		for j, r := range l {
+		for j, r := range strings.Trim(l, "\n\r") {
 			maze[i] = append(maze[i], string(r))
 			am[Point{i, j}] = math.Inf(0)
 			v[Point{i, j}] = false
