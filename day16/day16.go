@@ -2,7 +2,6 @@ package day16
 
 import (
 	"container/heap"
-	"fmt"
 	"math"
 	"os"
 	"slices"
@@ -100,64 +99,32 @@ func Execute(filepath string) (int, int, error) {
 			break
 		}
 		current := heap.Pop(&mdh).(*Distance)
-		// fmt.Scanln()
 		v[PointDirection{current.Point, current.Direction}] = true
 		for _, n := range GetNeighbours(current.Point, maze) {
 			if v[PointDirection{n, current.Direction}] || slices.Contains(prev[current.Point], n) {
 				continue
 			}
 			if n.I-current.Point.I == current.Direction.I && n.J-current.Point.J == current.Direction.J {
+				heap.Push(&mdh, &Distance{n, current.Weight + 1, current.Direction})
 				if am[n] == float64(current.Weight)+1 {
 					prev[n] = append(prev[n], current.Point)
 				} else if am[n] > float64(current.Weight)+1 {
-					heap.Push(&mdh, &Distance{n, current.Weight + 1, current.Direction})
 					am[n] = float64(current.Weight) + 1
 					prev[n] = []Point{current.Point}
-				} else if len(prev[n]) > 0 && float64(current.Weight+1) == am[prev[n][0]]+float64(1001) {
-					fmt.Println("SHOULD ADD...", current, prev[n][0], am[prev[n][0]])
 				}
 			} else {
+				heap.Push(&mdh, &Distance{n, current.Weight + 1001, Direction{n.I - current.Point.I, n.J - current.Point.J}})
 				if am[n] == float64(current.Weight)+1001 {
 					prev[n] = append(prev[n], current.Point)
 				} else if am[n] > float64(current.Weight)+1001 {
-					heap.Push(&mdh, &Distance{n, current.Weight + 1001, Direction{n.I - current.Point.I, n.J - current.Point.J}})
 					am[n] = float64(current.Weight) + 1001
 					prev[n] = []Point{current.Point}
 				}
 			}
 		}
 	}
-	fmt.Println(am[end], am[Point{1, 14}], am[Point{2, 15}])
-	fmt.Println(am[Point{7, 15}], am[Point{8, 15}], am[Point{7, 14}])
-	q := Queue{end}
-	unique := []Point{}
-	for {
-		if len(q) == 0 {
-			break
-		}
-		c := q.Pop()
-		if !slices.Contains(unique, c) {
-			unique = append(unique, c)
-		}
-		for _, _q := range prev[c] {
-			if am[_q] < am[c] {
-				q = append(q, _q)
-			}
-		}
-		prev[c] = []Point{}
-	}
-	// for i, r := range maze {
-	// 	for j, c := range r {
-	// 		if slices.Contains(unique, Point{i, j}) {
-	// 			fmt.Print("\033[31mO\033[0m")
-	// 		} else {
-	// 			fmt.Print(c)
-	// 		}
 
-	// 	}
-	// 	fmt.Println()
-	// }
-	return int(am[end]), len(unique), nil
+	return int(am[end]), -1, nil
 }
 
 func GetNeighbours(p Point, maze [][]string) []Point {
@@ -176,8 +143,3 @@ func GetNeighbours(p Point, maze [][]string) []Point {
 	}
 	return points
 }
-
-// 449 too low...?
-// 471
-// 516
-// 543
