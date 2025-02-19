@@ -60,9 +60,8 @@ func Execute(filepath string) (int, int, error) {
 			break
 		}
 		current := heap.Pop(&mdh).(*Distance)
-		if current.Weight > am[end] {
-			continue
-		}
+		fmt.Println(current)
+		fmt.Scanln()
 		v[PointDirection{current.Point, current.Direction}] = true
 		for _, n := range GetNeighbours(current.Point, maze) {
 			if v[PointDirection{n, current.Direction}] || slices.Contains(prev[current.Point], n) {
@@ -70,17 +69,13 @@ func Execute(filepath string) (int, int, error) {
 			}
 			if n.I-current.Point.I == current.Direction.I && n.J-current.Point.J == current.Direction.J {
 				heap.Push(&mdh, &Distance{n, current.Weight + 1, current.Direction})
-				if am[n] == current.Weight+1 || am[n] == current.Weight+1-1000 {
-					prev[n] = append(prev[n], current.Point)
-				} else if am[n] > current.Weight+1 {
+				if am[n] > current.Weight+1 {
 					am[n] = current.Weight + 1
 					prev[n] = []Point{current.Point}
 				}
 			} else {
 				heap.Push(&mdh, &Distance{n, current.Weight + 1001, Direction{n.I - current.Point.I, n.J - current.Point.J}})
-				if am[n] == current.Weight+1001 {
-					prev[n] = append(prev[n], current.Point)
-				} else if am[n] > current.Weight+1001 || am[n] == current.Weight+1-1000 {
+				if am[n] > current.Weight+1001 {
 					am[n] = current.Weight + 1001
 					prev[n] = []Point{current.Point}
 				}
@@ -89,6 +84,9 @@ func Execute(filepath string) (int, int, error) {
 	}
 	unique := Part2(end, prev)
 	Display(maze, unique)
+	for _, v := range unique {
+		fmt.Println(v, am[v])
+	}
 	return int(am[end]), len(unique), nil
 }
 
@@ -117,6 +115,7 @@ func Display(maze [][]string, unique []Point) {
 }
 
 func Part2(end Point, prev map[Point][]Point) []Point {
+	fmt.Println(prev)
 	q := Queue{end}
 	unique := []Point{}
 	for {
@@ -133,5 +132,6 @@ func Part2(end Point, prev map[Point][]Point) []Point {
 		q = append(q, prev[c]...)
 		prev[c] = []Point{}
 	}
+	fmt.Println(unique)
 	return unique
 }
